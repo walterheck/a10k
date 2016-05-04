@@ -1,0 +1,7 @@
+{
+    "require": {
+        "cpliakas/git-wrapper": "~1.0",
+        "monolog/monolog": "^1.19",
+        "twig/twig": "~1.0"
+    }
+}

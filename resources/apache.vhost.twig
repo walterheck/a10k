@@ -1,0 +1,30 @@
+<VirtualHost *:80>
+  ServerAdmin webmaster@localhost
+
+  ServerName {{ branch }}.rvillage.com
+
+  DocumentRoot /var/www/dev/{{ branch }}
+  <Directory "/var/www/dev/{{ branch }}">
+          Options Indexes FollowSymLinks
+          AllowOverride All
+          Options +FollowSymLinks
+          RewriteEngine On
+          Order allow,deny
+          Allow from all
+  </Directory>
+
+  LogFormat "%{X-Forwarded-For}i %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-Agent}i\" %V %D " proxy
+  LogFormat "%h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-agent}i\" %V %D " direct
+
+  SetEnvIf X-Forwarded-For "^.*\..*\..*\..*" forwarded
+
+  CustomLog ${APACHE_LOG_DIR}/direct_access.log direct env=!forwarded
+  CustomLog ${APACHE_LOG_DIR}/proxy_access.log proxy env=forwarded
+
+  ErrorLog ${APACHE_LOG_DIR}/error.log
+
+  # Possible values include: debug, info, notice, warn, error, crit,
+  # alert, emerg.
+  LogLevel warn
+
+</VirtualHost>
